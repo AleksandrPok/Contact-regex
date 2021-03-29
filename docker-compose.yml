@@ -1,21 +1,19 @@
-version: "3"
+version: "3.2"
 services:
   contact-regex:
-    image: contact-regex
-    ports:
-      - "8080:8080"
-    networks:
-      - contact-regex-mysql
     depends_on:
       - mysqldb
-
+    build: .
+    ports:
+      - "8082:8081"
+    links:
+      - mysqldb
   mysqldb:
     image: mysql:8
-    networks:
-      - contact-regex-mysql
+    ports:
+      - "3307:3306"
+    restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=1979
-      - MYSQL_DATABASE=contact_regex
-
-networks:
-  contact-regex-mysql:
+      MYSQL_DATABASE: contact_regex
+      MYSQL_PASSWORD: 1979
+      MYSQL_ROOT_PASSWORD: 1979
